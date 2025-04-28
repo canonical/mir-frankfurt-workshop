@@ -1,10 +1,11 @@
 #define MIR_LOG_COMPONENT "mirly-main"
 
+#include "mirly_window_manager.h"
+
 #include <mir/log.h>
 
 #include <miral/runner.h>
 #include <miral/set_window_management_policy.h>
-#include <miral/minimal_window_manager.h>
 #include <miral/external_client.h>
 #include <miral/append_event_filter.h>
 #include <miral/toolkit_event.h>
@@ -50,7 +51,7 @@ int main(int argc, char const* argv[])
 
    return runner.run_with(
     {
-        miral::set_window_management_policy<miral::MinimalWindowManager>(),
+        miral::set_window_management_policy<MirlyWindowManager>(),
         external_client_launcher,
         miral::AppendEventFilter(open_terminal)
     });

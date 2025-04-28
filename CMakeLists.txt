@@ -13,6 +13,7 @@ pkg_check_modules(XKBCOMMON xkbcommon REQUIRED)
 # Create an executable target for the mirly application.
 add_executable(mirly
     src/main.cpp
+    src/mirly_window_manager.cpp src/mirly_window_manager.h
 )
 
 # Include the MirAL headers and link against the MirAL library.
