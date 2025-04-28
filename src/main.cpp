@@ -2,8 +2,18 @@
 
 #include <mir/log.h>
 
-int main()
+#include <miral/runner.h>
+#include <miral/set_window_management_policy.h>
+#include <miral/minimal_window_manager.h>
+
+int main(int argc, char const* argv[])
 {
-    mir::log_info("Hello, World!");
-    return 0;
+   mir::log_info("Running Mirly");
+   miral::MirRunner runner{argc, argv};
+
+   return runner.run_with(
+    {
+        miral::set_window_management_policy<miral::MinimalWindowManager>()
+    });
+
 }
