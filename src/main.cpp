@@ -9,6 +9,7 @@
 #include <miral/external_client.h>
 #include <miral/append_event_filter.h>
 #include <miral/toolkit_event.h>
+#include <miral/display_configuration_option.h>
 #include <xkbcommon/xkbcommon-keysyms.h>
 
 // main.cpp
@@ -56,10 +57,11 @@ int main(int argc, char const* argv[])
 
     return runner.run_with(
     {
-        miral::set_window_management_policy<MirlyWindowManager>(),
+        miral::set_window_management_policy<MirlyWindowManager>(external_client_launcher),
         external_client_launcher,
         miral::AppendEventFilter(open_terminal),
-        wayland_extensions
+        wayland_extensions,
+        miral::display_configuration_options
     });
 
 }

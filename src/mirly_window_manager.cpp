@@ -5,6 +5,7 @@
 
 #include <mir/log.h>
 #include <miral/toolkit_event.h>
+#include <miral/output.h>
 #include <xkbcommon/xkbcommon-keysyms.h>
 
 namespace
@@ -19,8 +20,9 @@ public:
 };
 }
 
-MirlyWindowManager::MirlyWindowManager(miral::WindowManagerTools const& tools)
-    : miral::MinimalWindowManager(tools)
+MirlyWindowManager::MirlyWindowManager(miral::WindowManagerTools const& tools, miral::ExternalClientLauncher const& external_client_launcher)
+    : miral::MinimalWindowManager(tools),
+      external_client_launcher(external_client_launcher)
 {
 }
 
@@ -124,4 +126,19 @@ void MirlyWindowManager::handle_modify_window(miral::WindowInfo& window_info, mi
     }
 
     MinimalWindowManager::handle_modify_window(window_info, specification);
+}
+
+void MirlyWindowManager::advise_output_create(miral::Output const& output)
+{
+    mir::log_info("Output %s created %d", output.name().c_str(), output_count);
+    std::string const wallpaper_path = output_count % 2 == 0
+        ? "/home/matthew/Github/mir-frankfurt-workshop/assets/ubuntu-2410-wallpaper.webp"
+        : "/home/matthew/Github/mir-frankfurt-workshop/assets/ubuntu-2504-wallpaper-plucky.webp";
+    external_client_launcher.launch({
+        "swaybg",
+        "--output",
+        output.name(),
+        "--image",
+        wallpaper_path});
+    output_count++;
 }
