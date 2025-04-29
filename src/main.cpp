@@ -11,13 +11,18 @@
 #include <miral/toolkit_event.h>
 #include <xkbcommon/xkbcommon-keysyms.h>
 
+// main.cpp
+#include <miral/wayland_extensions.h>
+
 int main(int argc, char const* argv[])
 {
-   mir::log_info("Running Mirly");
-   miral::MirRunner runner{argc, argv};
-   miral::ExternalClientLauncher external_client_launcher;
+    mir::log_info("Running Mirly");
+    miral::MirRunner runner{argc, argv};
+    miral::ExternalClientLauncher external_client_launcher;
+    miral::WaylandExtensions wayland_extensions = miral::WaylandExtensions {}
+        .enable(miral::WaylandExtensions::zwlr_layer_shell_v1);
 
-   auto const open_terminal = [&](MirEvent const* event)
+    auto const open_terminal = [&](MirEvent const* event)
     {
         if (miral::toolkit::mir_event_get_type(event) != mir_event_type_input)
            return false;
@@ -49,11 +54,12 @@ int main(int argc, char const* argv[])
         }
     };
 
-   return runner.run_with(
+    return runner.run_with(
     {
         miral::set_window_management_policy<MirlyWindowManager>(),
         external_client_launcher,
-        miral::AppendEventFilter(open_terminal)
+        miral::AppendEventFilter(open_terminal),
+        wayland_extensions
     });
 
 }
