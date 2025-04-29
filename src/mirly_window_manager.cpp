@@ -112,3 +112,16 @@ auto MirlyWindowManager::place_new_window(
     specification.userdata() = std::make_shared<ExtraWindowData>(placement);
     return specification;
 }
+
+void MirlyWindowManager::handle_modify_window(miral::WindowInfo& window_info, miral::WindowSpecification const& modifications)
+{
+    miral::WindowSpecification specification = modifications;
+    if (specification.state() == mir_window_state_maximized)
+    {
+        specification.state().consume();
+        specification.top_left().consume();
+        specification.size().consume();
+    }
+
+    MinimalWindowManager::handle_modify_window(window_info, specification);
+}

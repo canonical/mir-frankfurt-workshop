@@ -11,6 +11,7 @@ public:
     auto place_new_window(
         miral::ApplicationInfo const& app_info,
         miral::WindowSpecification const& requested_specification) -> miral::WindowSpecification override;
+    void handle_modify_window(miral::WindowInfo& window_info, miral::WindowSpecification const& modifications) override;
 
 private:
     int window_count = 0;
